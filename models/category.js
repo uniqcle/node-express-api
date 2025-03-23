@@ -10,7 +10,11 @@ const schema = new mongooseDb.Schema(
       minlength: 2,
       unique: true,
       trim: true,
-    },
+		},
+		description: {
+			type: String, 
+			maxlength: 1000
+	  }, 
     createdAt: {
       type: Date,
       default: Date.now,
@@ -19,4 +23,4 @@ const schema = new mongooseDb.Schema(
   { versionKey: false }
 ); 
 
-module.exports = mongooseDb.model('Manufacturer', schema)
+module.exports = mongooseDb.model('Category', schema)

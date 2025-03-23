@@ -1,61 +1,14 @@
-const ManufacturerModel = require("../models/manufacturer");
-
 const manufacturerRouter = require("express").Router();
+const manufacturerController = require("../controllers/ManufacturerController");
 
-manufacturerRouter.post("/", async (req, res) => {
-  try {
-    console.log(req.body);
-    let manufacturerInstance = new ManufacturerModel(req.body);
+manufacturerRouter.get("/all", manufacturerController.getAll);
 
-    await manufacturerInstance.save();
+manufacturerRouter.get("/:id", manufacturerController.getyById);
 
-    res.status(201).json({ message: "Manufacturer was created" });
-  } catch (err) {
-    return res.status(400).json({ message: "Произошла ошибка" });
-  }
-});
+manufacturerRouter.post("/", manufacturerController.createManufacturer);
 
-manufacturerRouter.get('/:id', async (req, res, next) => {
-	const id = req.params.id;
+manufacturerRouter.put("/:id", manufacturerController.updateManufacturer);
 
-	try {
-		const manufacturer = await ManufacturerModel.findById(id).exec();
-		
-		res.status(200).json(manufacturer)
-	} catch (err) {
-		return next(err)
-	}
-}); 
-
-
-manufacturerRouter.put('/:id', async (req, res, next) => {
-	const id = req.params.id;
-
-	try {
-		await ManufacturerModel.findByIdAndUpdate(id, req.body, {
-			runValidators: true,
-		});
-		await res.status(200).json({ message: 'Данные обновлены' })
-
-	} catch (err) {
-		return next(err)
-	}
-}); 
-
-
-manufacturerRouter.delete('/:id', async (req, res, next) => {
-	const id = req.params.id;
-
-	try {
-		await ManufacturerModel.findByIdAndDelete(id);
-
-		await res.json({ message: "Производитель удален" });
-		
-	} catch (err) {
-		return next(err)
-	}
-})
-
-
+manufacturerRouter.delete("/:id", manufacturerController.deleteById);
 
 module.exports = manufacturerRouter;
